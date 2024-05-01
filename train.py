@@ -13,11 +13,31 @@ import preprocess_data
 
 def build_and_train(dataset, filters, batch_size, model_path=os.environ["MODEL_PATH"]):
     dataset = dataset.batch(batch_size).prefetch(1)
-
+    
     model = tf.keras.models.Sequential([
         tf.keras.layers.ConvLSTM2D(
             filters=filters,
             kernel_size=(5, 5),
+            padding="same",
+            return_sequences=True,
+            activation="relu",
+            dropout=myDO,
+            recurrent_dropout=myDO
+        ),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.ConvLSTM2D(
+            filters=filters,
+            kernel_size=(3, 3),
+            padding="same",
+            return_sequences=True,
+            activation="relu",
+            dropout=myDO,
+            recurrent_dropout=myDO
+        ),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.ConvLSTM2D(
+            filters=filters,
+            kernel_size=(3, 3),
             padding="same",
             return_sequences=True,
             activation="relu",
